@@ -2,29 +2,23 @@
 
 import cantools
 import math
+from cantools.database.can import Signal
 
 class Message(cantools.database.can.Message):
 	def __init__(self, id, name, senders, receivers, signals):
 
-		signals_with_receivers = []
-		
-		for signal in signals:
-			signals_with_receivers.append(
-				cantools.database.can.Signal(
+		signals_with_receivers = [ Signal(
 					name=signal.name, 
 					start=signal.start, 
 					length=signal.length,
 					is_signed=signal.is_signed,
-					scale=signal.scale,
 					minimum=signal.minimum,
 					maximum=signal.maximum,
+					conversion=signal.conversion,
 					unit=signal.unit,
-					choices=signal.choices,
-					is_float=signal.is_float,
 					receivers=receivers
-				)
-			)
-
+				) for signal in signals]
+	
 		bytes = 0
 		try:
 			bits = max(s.start + s.length for s in signals_with_receivers)

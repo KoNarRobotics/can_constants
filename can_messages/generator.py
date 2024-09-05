@@ -15,8 +15,8 @@ from messages import temperature
 from messages import konarm
 
 db = cantools.database.can.Database(
-	actuators.db
-	+ battery.db
+	battery.db 
+	+ actuators.db
 	+ buzzer.db
 	+ control_mode.db
 	+ gps.db
