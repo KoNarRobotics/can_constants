@@ -21,10 +21,10 @@ class Float(cantools.database.can.Signal):
 	def __init__(self, name, start, unit='', scale=1, is_double=False):
 		super().__init__(name, start, 32, unit=unit, conversion=BaseConversion.factory(scale=scale,is_float=True) )
 
-		if is_double:
-			self.length = 64
-		else:
-			self.length = 32
+		# if is_double:
+		# 	self.length = 64
+		# else:
+		# 	self.length = 32
 
 class Enum(cantools.database.can.Signal):
 	def __init__(self, name, start, length, list):
