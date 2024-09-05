@@ -26,9 +26,14 @@ can_messages
 
 ## Generowanie plików C
 
+### Prosty sposób
+Wywołaj skrypt i odpręż się:
+```bash
+./generate-files.sh
+```
+
+### Ręczne wywołanie
 Będąc w katalogu ```can_messages``` należy wywołać:
-
-
 ```bash
 python3 generator.py
 ```
