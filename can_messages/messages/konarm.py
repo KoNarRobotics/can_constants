@@ -15,8 +15,8 @@ konarm_joint_status = [
 ]
 
 konarm_error_status = [
-	(1, 'ok'), 
-	(2, 'fault') 
+	(0, 'ok'), 
+	(1, 'fault') 
 ]
 
 base_db = [
