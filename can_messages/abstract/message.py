@@ -30,7 +30,8 @@ class Message(cantools.database.can.Message):
 			raise ValueError('Message payload must be in range [0; 8] bytes')
 		
 		super().__init__(
-			frame_id=id, 
+			frame_id=id,
+			is_extended_frame=False, 
 			name=name, 
 			length=bytes,
 			signals=signals_with_receivers,
