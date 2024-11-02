@@ -19,6 +19,13 @@ konarm_error_status = [
 	(1, 'fault') 
 ]
 
+
+konarm_control_mode = [
+	(1, 'velocity_control'), 
+	(2, 'position_control'),
+	(3, 'torque_control') 
+]
+
 base_db = [
   Message(0x001, 'status', senders=[Module.KONARM], receivers=[Module.JETSON], signals=[
     Enum('status', 0, 8, list=konarm_joint_status)  
@@ -34,9 +41,9 @@ base_db = [
     Float('velocity', 32, 'rad/s'),
   ]),
 
-  Message(0x004, 'clear_errors', senders=[Module.JETSON, Module.SENSOR], receivers=[Module.KONARM], signals=[]),
+  Message(0x004, 'clear_errors', senders=[Module.JETSON], receivers=[Module.KONARM], signals=[]),
 	
-  Message(0x005, 'get_errors', senders=[Module.JETSON, Module.SENSOR], receivers=[Module.KONARM], signals=[
+  Message(0x005, 'get_errors', senders=[Module.JETSON], receivers=[Module.KONARM], signals=[
 		Enum('temp_engine_overheating', 0, 1, list=konarm_error_status),
 		Enum('temp_driver_overheating', 1, 1, list=konarm_error_status),
 		Enum('temp_board_overheating', 2, 1, list=konarm_error_status),
@@ -50,6 +57,10 @@ base_db = [
     Enum('can_disconnected', 10, 1, list=konarm_error_status),
     Enum('can_error', 11, 1, list=konarm_error_status),
     Enum('controler_motor_limit_position', 12, 1, list=konarm_error_status),
+  ]),
+	
+  Message(0x006, 'set_control_mode', senders=[Module.JETSON], receivers=[Module.KONARM], signals=[
+		Enum('control_mode', 0, 8, list=konarm_control_mode)
   ])
 ]
 
