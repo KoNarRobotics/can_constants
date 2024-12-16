@@ -46,6 +46,18 @@ Operację tą należy wykonać gdy:
 * ```git pull```
 * program nie działa
 
+## Dodanie do projektu
+Najprostzym sposobem dodania do projektu dodanie bazy jako biblioteki statyczniej do projektu.
+```cmake
+
+add_subdirectory(can_constants) # or other path to the submodule
+
+target_link_libraries(${PROJECT_NAME}
+  can_constants
+  # and other libs ...
+)
+```
+
 ## Zastosowanie
 
 Przykład zakodowania danych:
