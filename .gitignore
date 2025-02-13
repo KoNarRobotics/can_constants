@@ -1,4 +1,6 @@
 
 **/__pycache__
-**/output
+**/output/can.c
+**/output/can.h
+**/output/can.dbc
 .venv
