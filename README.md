@@ -27,10 +27,16 @@ can_messages
 ## Generowanie plików C
 
 ### Prosty sposób
-Wywołaj skrypt i odpręż się:
+
+
+
+1. Wywołaj skrypt i odpręż się:
 ```bash
 ./generate-files.sh
+# lub
+./generate-files.sh -v
 ```
+- flaga ```-v``` pobierze pakiety pathona w środowisku wirtualnym 
 
 ### Ręczne wywołanie
 Będąc w katalogu ```can_messages``` należy wywołać:

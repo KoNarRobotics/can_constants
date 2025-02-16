@@ -3,4 +3,6 @@
 **/output/can.c
 **/output/can.h
 **/output/can.dbc
+build
+.vscode
 .venv

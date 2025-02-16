@@ -5,8 +5,8 @@ import math
 from cantools.database.can import Signal
 
 class Message(cantools.database.can.Message):
-	def __init__(self, id, name, senders, receivers, signals):
-
+	def __init__(self, id, name, senders, receivers, signals,extended_frame=True):
+    
 		signals_with_receivers = [ Signal(
 					name=signal.name, 
 					start=signal.start, 
@@ -31,7 +31,7 @@ class Message(cantools.database.can.Message):
 		
 		super().__init__(
 			frame_id=id,
-			is_extended_frame=False, 
+			is_extended_frame=extended_frame, 
 			name=name, 
 			length=bytes,
 			signals=signals_with_receivers,
