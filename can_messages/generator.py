@@ -3,7 +3,7 @@
 import cantools
 import os
 
-
+from abstract.helper import can_db_builder
 from messages import actuators
 from messages import battery
 from messages import buzzer
@@ -16,45 +16,19 @@ from messages import temperature
 from messages import konarm
 from messages import vesc6
 
-
-def add_to_db(db, module):
-  ids = {}
-  for a in db:
-    ids[a.frame_id] = a
-  messages_to_check = module.db
-  for message in messages_to_check:
-    if message.frame_id in ids:
-      print(f"""\033[91m 
-                Collision detected in message: NAME={message.name} in file: {module.__file__}.py
-                Existing message ID={message.frame_id} NAME={ids[message.frame_id].name} \033[0m
-            """)
-      raise ValueError('Collision detected')
-  return  db + messages_to_check
-  
-
 if __name__ == '__main__':
-  messages = actuators.db
-  messages = add_to_db(messages,battery)
-  messages = add_to_db(messages, buzzer)
-  messages = add_to_db(messages, control_mode)
-  messages = add_to_db(messages, gps)
-  messages = add_to_db(messages, imu)
-  messages = add_to_db(messages, metal_detector)
-  messages = add_to_db(messages, odrive)
-  messages = add_to_db(messages, temperature)
-  messages = add_to_db(messages, konarm)
-  messages = add_to_db(messages, vesc6)
-
-
-  db = cantools.database.can.Database(
-    messages
-  )
-
-  cantools.database.dump_file(db, 'can.dbc')
-
-  os.system('python3 -m cantools generate_c_source --use-float --database-name can can.dbc')
-
-  os.system('mkdir -p output')
-  os.system('mv can.dbc output')
-  os.system('mv can.h output')
-  os.system('mv can.c output')
+  cdb = can_db_builder()
+  cdb.add_module(actuators)
+  cdb.add_module(battery)
+  cdb.add_module(buzzer)
+  cdb.add_module(control_mode)
+  cdb.add_module(gps)
+  cdb.add_module(imu)
+  cdb.add_module(metal_detector)
+  cdb.add_module(odrive)
+  cdb.add_module(temperature)
+  cdb.add_module(konarm)
+  cdb.add_module(vesc6)
+  cdb.db_build()
+  cdb.dump_file('can.dbc')
+  cdb.generate_C_code('can.dbc', 'output')
