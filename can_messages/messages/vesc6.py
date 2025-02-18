@@ -2,8 +2,11 @@ from abstract.signals import Enum, Unsigned,Float, Signed, BIG_ENDIAN, LITTLE_EN
 from abstract.modules import Module
 from abstract.message import Message
 
-## VESC6 CAN messages
-## https://github.com/vedderb/bldc/blob/master/documentation/comm_can.md
+################################################
+# VESC6 CAN messages
+#
+# https://github.com/vedderb/bldc/blob/master/documentation/comm_can.md
+#
 # These command numbers are
 # put in the second byte of the 29
 # bit ID for the extended CAN
@@ -15,25 +18,26 @@ from abstract.message import Message
 # 255). With only 3 bits left, only 8
 # commands would be available if
 # you used a standard frame.
-
-## FRAME FORMAT
-# | B28 - B16 |  B15 - B8  | B7 - B0 |
-# |-----------|------------|---------|
-# |   Unused  | Command ID | VESC ID |
-
-
-############################################
+#################################################
+#      FRAME FORMAT
+#
+#      | B28 - B16 |  B15 - B8  | B7 - B0 |
+#      |-----------|------------|---------|
+#      |   Unused  | Command ID | VESC ID |
+#
+################################################
 # 
-# ATTENTION:  all values are integers and are scaled by 1000, most of them are signed 
+# ATTENTION:  all values are integers and are scaled by 1000, most of them are signed, so the Units are in  mili[UNIT] 
 # EXCEPTIONS: 
 #     - the RPM value is scaled by 1
 #     - the Position value is from 0 to 360 degrees  (0 to 360 000 after scaling)
-#     - the Status message values are not scaled
+#     - the Status message values are not scaled refere to the 
 #
 #  So if you want to set a duty cycle to 50% you should set the value to 50 000 
 #  or amperage to 1.5A you should set the value to 1500
 #  or when you read the value of curent: 15300 then it means 15.3A
-############################################
+#
+################################################
 
 
 CAN_PACKET_SET_DUTY = 0
@@ -42,22 +46,24 @@ CAN_PACKET_SET_CURRENT_BRAKE = 2
 CAN_PACKET_SET_RPM = 3
 CAN_PACKET_SET_POS = 4
 
-# CAN_PACKET_FILL_RX_BUFFER = 5
-# CAN_PACKET_FILL_RX_BUFFER_LONG = 6
-# CAN_PACKET_PROCESS_RX_BUFFER = 7
-# CAN_PACKET_PROCESS_SHORT_BUFFER = 8
+
 
 CAN_PACKET_STATUS_1 = 9
 CAN_PACKET_STATUS_2 = 14
 CAN_PACKET_STATUS_3 = 15
 CAN_PACKET_STATUS_4 = 16
-
+CAN_PACKET_STATUS_5 = 27
+CAN_PACKET_STATUS_6 = 28
 
 CAN_PACKET_SET_CURRENT_REL = 10
 CAN_PACKET_SET_CURRENT_BRAKE_REL = 11
 CAN_PACKET_SET_CURRENT_HANDBRAKE = 12
 CAN_PACKET_SET_CURRENT_HANDBRAKE_REL = 13
 
+# CAN_PACKET_FILL_RX_BUFFER = 5
+# CAN_PACKET_FILL_RX_BUFFER_LONG = 6
+# CAN_PACKET_PROCESS_RX_BUFFER = 7
+# CAN_PACKET_PROCESS_SHORT_BUFFER = 8
 # CAN_PACKET_PING = 17
 # CAN_PACKET_PONG = 18
 # CAN_PACKET_DETECT_APPLY_ALL_FOC = 19
@@ -70,6 +76,7 @@ CAN_PACKET_SET_CURRENT_HANDBRAKE_REL = 13
 # CAN_PACKET_CONF_STORE_FOC_ERPMS = 26
 # CAN_PACKET_STATUS_5 = 27
 
+################################################
 ## BASE VESC IDS
 VESC_FRONT_LEFT = 20
 VESC_FRONT_RIGHT = 21
@@ -131,6 +138,17 @@ def make_database_from_vesc(vesc_id,name_str):
       Signed('pid_pos',48,16,'Deg',scale=1/50,byte_order=BIG_ENDIAN)]
       ,extended_frame=True),
   
+    Message(vc(CAN_PACKET_STATUS_5,vesc_id), name_str+'_status_5', senders=[Module.VESC], receivers=[Module.JETSON], signals=[
+      Signed('tachometer',0,32,'EREV',scale=1/6,byte_order=BIG_ENDIAN),
+      Signed('volts_in',32,16,'V',scale=1/10,byte_order=BIG_ENDIAN)]
+      ,extended_frame=True),
+    
+    Message(vc(CAN_PACKET_STATUS_6,vesc_id), name_str+'_status_6', senders=[Module.VESC], receivers=[Module.JETSON], signals=[
+      Signed('adc1',0,16,'mV',scale=1,byte_order=BIG_ENDIAN),
+      Signed('adc2',16,16,'mV',scale=1,byte_order=BIG_ENDIAN),
+      Signed('adc3',32,16,'mV',scale=1,byte_order=BIG_ENDIAN),
+      Signed('ppm',48,16,'m%',scale=1,byte_order=BIG_ENDIAN),]
+      ,extended_frame=True),
   ]
   return base_db
 
