@@ -3,6 +3,7 @@
 **/output/can.c
 **/output/can.h
 **/output/can.dbc
+**/output/docs.md
 build
 .vscode
 .venv

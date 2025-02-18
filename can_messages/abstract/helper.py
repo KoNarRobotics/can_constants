@@ -54,3 +54,28 @@ class can_db_builder:
       if os.path.exists(dest_file):
         os.remove(dest_file)
       shutil.move(src_file, output_dir)
+
+  def generate_docs(self, file_out):
+    doc_lines = ["# CAN frames Documentation\n"]
+    for module, messages in self.modules.items():
+        doc_lines.append(f"# Module: {module.__package__.upper()}")
+        for msg in messages:
+          doc_lines.append(f"### Msg: {msg.name}")
+          doc_lines.append(f"- { 'ID [Extended]' if msg.is_extended_frame else 'ID'} : ***{hex(msg.frame_id)}***")  
+          doc_lines.append(f"- Senders: ***{', '.join(msg.senders) if msg.senders else 'Unknown'}***")
+          doc_lines.append(f"- Receivers: ***{', '.join(msg.receivers) if msg.receivers else 'Unknown'}***")
+          doc_lines.append(f"- DLC: {msg.length } bytes")
+          
+          doc_lines.append("#### Signals:")
+          for signal in msg.signals:
+              doc_lines.append(f"  - **{signal.name}**")
+              # doc_lines.append(f"    - Start Bit: {signal.start}")
+              doc_lines.append(f"    - Length: ***{signal.length}*** bits")
+              # doc_lines.append(f"    - Scale: {signal.scale}, Offset: {signal.offset}")
+              # doc_lines.append(f"    - Min: {signal.minimum}, Max: {signal.maximum}")
+              doc_lines.append(f"    - Unit: ***{signal.unit or 'None'}***")
+              doc_lines.append("")
+
+    # Save documentation to a file
+    with open(f"{file_out}", "w") as f:
+        f.write("\n".join(doc_lines))

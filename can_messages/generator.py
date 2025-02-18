@@ -32,3 +32,4 @@ if __name__ == '__main__':
   cdb.db_build()
   cdb.dump_file('can.dbc')
   cdb.generate_C_code('can.dbc', 'output')
+  cdb.generate_docs('output/docs.md')
