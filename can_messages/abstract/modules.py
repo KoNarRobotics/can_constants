@@ -14,3 +14,4 @@ class Module(StrEnum):
 	SENSOR = 'SensorBoard'
 	METAL_DETECTOR = 'MetalDetectorBoard'
 	KONARM = "KonARM"
+	VESC = "VESC"
