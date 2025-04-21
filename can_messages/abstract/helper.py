@@ -8,12 +8,25 @@ class can_db_builder:
     self.db = None
 
   def add_module(self, module):
+    """
+    ### Add a module to the database builder. 
+    
+    The module must have an **global attribute 'db'** which is a list of can messages.
+    Constructed using the abstract classes provided in the Signals.py.
+
+    This function checks for collisions in the database.
+    If a collision is detected, an error message is printed and the module is not added to the database.
+    """
     if not hasattr(module, 'db') or not isinstance(module.db, list):
       raise ValueError(f"Module {module} must have an attribute 'db' of type list with can Messages")
-    self.__check_for_collisions(module)
-    self.modules[module] = module.db
+    if not self.__check_for_collisions(module):
+      self.modules[module] = module.db
+      print(f"\033[92m Successfully added module \"{module.__name__.split('.')[1]}\" to the database!\033[0m")
     
   def db_build(self):
+    """
+    ### Build the database from the modules added to the builder.
+    """
     db = []
     for module in self.modules:
       db += module.db
@@ -21,6 +34,10 @@ class can_db_builder:
     return self.db
 
   def dump_file(self,file_name):
+    """
+    ### Dump the database to a file.
+    The file name must end with .dbc
+    """
     cantools.database.dump_file(self.db, file_name)
 
   def __check_for_collisions(self,module):
@@ -28,12 +45,14 @@ class can_db_builder:
     for mod in self.modules.keys():
       for a in mod.db:
         ids[a.frame_id] = (a,mod)
-
+    has_collision = False
     messages_to_check = module.db
     for message in messages_to_check:
       if message.frame_id in ids:
         print(f"""\033[91m 
-                  Collision detected in can frame: 
+                  Collision detected in between existing CAN FRAME IDs!
+                  The following messages have the same ID:
+                  New message: 
                     NAME={message.name}
                     ID={message.frame_id} 
                     In file: {module.__file__}
@@ -41,10 +60,22 @@ class can_db_builder:
                     NAME={ids[message.frame_id][0].name}
                     ID={message.frame_id} 
                     From file: {ids[message.frame_id][1].__file__}
+                    \033[93m
+                  Please check the IDs of the messages in the database and correct the IDs.
+                  The module \"{module.__name__.split('.')[1]}\" will not be added to the database.
                   \033[0m
               """)
+        has_collision = True
+    return has_collision
         
   def generate_C_code(self,db_file, output_dir):
+    """
+    ### Generate C code from the database file.
+      The file name must end with .dbc
+
+      db_file: The database file to generate C code from.
+      output_dir: The directory where the generated files will be saved.
+    """
     os.system(f'python3 -m cantools generate_c_source --use-float --database-name can {db_file}')
     if not os.path.exists(output_dir):
       os.makedirs(output_dir)
@@ -56,6 +87,11 @@ class can_db_builder:
       shutil.move(src_file, output_dir)
 
   def generate_docs(self, file_out):
+    """
+    ### Generate documentation from the database.
+      The file name must end with .md
+    """
+
     doc_lines = ["# CAN frames Documentation\n"]
     for module, messages in self.modules.items():
         doc_lines.append(f"# Module: {module.__package__.upper()}")

@@ -17,7 +17,10 @@ from messages import konarm
 from messages import vesc6
 
 if __name__ == '__main__':
+  # Init CAN database builder
   cdb = can_db_builder()
+
+  # add CAN messages to the database
   cdb.add_module(actuators)
   cdb.add_module(battery)
   cdb.add_module(buzzer)
@@ -29,6 +32,8 @@ if __name__ == '__main__':
   cdb.add_module(temperature)
   cdb.add_module(konarm)
   cdb.add_module(vesc6)
+
+  # Build the database and generate the files
   cdb.db_build()
   cdb.dump_file('can.dbc')
   cdb.generate_C_code('can.dbc', 'output')
