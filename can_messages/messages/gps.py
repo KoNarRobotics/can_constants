@@ -6,7 +6,7 @@ from abstract.message import Message
 
 db = [
 
-	Message(0x401, 'gps_status', senders=[Module.SENSOR], receivers=[Module.JETSON], signals=[
+	Message(0x421, 'gps_status', senders=[Module.SENSOR], receivers=[Module.JETSON], signals=[
 		Enum('status', 0, 8, list=[
 			(1, 'ok'), 
 			(2, 'disconnected'), 
