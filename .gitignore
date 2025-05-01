@@ -1,8 +1,8 @@
 
 **/__pycache__
-**/output/can.c
-**/output/can.h
-**/output/can.dbc
+**/output/can_messages.c
+**/output/can_messages.h
+**/output/can_messages.dbc
 **/output/docs.md
 build
 .vscode

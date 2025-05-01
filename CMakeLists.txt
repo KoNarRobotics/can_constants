@@ -4,7 +4,7 @@ project(can_constants VERSION 1.0 LANGUAGES C)
 
 
 set(can_files
-  ${PROJECT_SOURCE_DIR}/can_messages/output/can.c
+  ${PROJECT_SOURCE_DIR}/can_messages/output/can_messages.c
 )
 
 set_source_files_properties(${can_files} PROPERTIES GENERATED TRUE)

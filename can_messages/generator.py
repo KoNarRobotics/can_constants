@@ -15,6 +15,7 @@ from messages import odrive
 from messages import temperature
 from messages import konarm
 from messages import vesc6
+from messages import barometer
 
 if __name__ == '__main__':
   # Init CAN database builder
@@ -32,6 +33,7 @@ if __name__ == '__main__':
   cdb.add_module(temperature)
   cdb.add_module(konarm)
   cdb.add_module(vesc6)
+  cdb.add_module(barometer)
 
   # Build the database and generate the files
   cdb.db_build()

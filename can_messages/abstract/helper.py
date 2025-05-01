@@ -68,23 +68,26 @@ class can_db_builder:
         has_collision = True
     return has_collision
         
-  def generate_C_code(self,db_file, output_dir):
+  def generate_C_code(self,db_file, output_dir,databse_name='can_messages'):
     """
     ### Generate C code from the database file.
       The file name must end with .dbc
 
       db_file: The database file to generate C code from.
       output_dir: The directory where the generated files will be saved.
+      databse_name: The name of the database. This will be used as the prefix for the generated files.
     """
-    os.system(f'python3 -m cantools generate_c_source --use-float --database-name can {db_file}')
+    os.system(f'python3 -m cantools generate_c_source --use-float --database-name {databse_name} {db_file}')
     if not os.path.exists(output_dir):
       os.makedirs(output_dir)
-    for file_name in ['can.dbc', 'can.h', 'can.c']:
+
+    for file_name in ['can.dbc', f'{databse_name}.h', f'{databse_name}.c']:
       src_file = file_name
       dest_file = os.path.join(output_dir, file_name)
       if os.path.exists(dest_file):
         os.remove(dest_file)
       shutil.move(src_file, output_dir)
+    shutil.move( os.path.join(output_dir, 'can.dbc'), os.path.join(output_dir,f'{databse_name}.dbc'))
 
   def generate_docs(self, file_out):
     """

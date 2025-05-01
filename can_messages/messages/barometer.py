@@ -12,7 +12,7 @@ db = [
       (2, 'error')
     ])]
   ),
-	Message(0x241, 'barometer_data', senders=[Module.SENSOR], receivers=[Module.JETSON], signals=[
+	Message(0x432, 'barometer_data', senders=[Module.SENSOR], receivers=[Module.JETSON], signals=[
 		Float('temperature', 0, 'C'),
     Float('pressure', 32, 'hPa')
 	])
