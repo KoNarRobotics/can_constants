@@ -2,7 +2,7 @@
 
 from copy import copy
 
-from abstract.signals import Float, Unsigned, Enum
+from abstract.signals import Float, Unsigned, Enum, Signed
 from abstract.modules import Module
 from abstract.message import Message
 
