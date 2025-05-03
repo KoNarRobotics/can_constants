@@ -77,17 +77,31 @@ class can_db_builder:
       output_dir: The directory where the generated files will be saved.
       databse_name: The name of the database. This will be used as the prefix for the generated files.
     """
-    os.system(f'python3 -m cantools generate_c_source --use-float --database-name {databse_name} {db_file}')
+    db="can"
+    os.system(f'python3 -m cantools generate_c_source --use-float --database-name {db} {db_file} 1>/dev/null 2>&1')
     if not os.path.exists(output_dir):
       os.makedirs(output_dir)
 
-    for file_name in ['can.dbc', f'{databse_name}.h', f'{databse_name}.c']:
-      src_file = file_name
-      dest_file = os.path.join(output_dir, file_name)
-      if os.path.exists(dest_file):
-        os.remove(dest_file)
-      shutil.move(src_file, output_dir)
-    shutil.move( os.path.join(output_dir, 'can.dbc'), os.path.join(output_dir,f'{databse_name}.dbc'))
+    # for file_name in ['can.dbc', f'{db}.h', f'{db}.c']:
+    #   src_file = file_name
+    #   dest_file = os.path.join(output_dir, file_name)
+    #   if os.path.exists(dest_file):
+    #     os.remove(dest_file)
+    #   shutil.move(src_file, output_dir)
+
+    shutil.move( 'can.dbc', os.path.join(output_dir,f'{databse_name}.dbc'))
+    shutil.move( 'can.h', os.path.join(output_dir,f'{databse_name}.h'))
+    shutil.move( 'can.c', os.path.join(output_dir,f'{databse_name}.c'))
+    c_file = os.path.join(output_dir,f'{databse_name}.c')
+    # Modify the generated C file to replace #include "can.h" with the correct header file name
+    with open(c_file, "r") as file:
+      c_code = file.read()
+    c_code = c_code.replace('#include "can.h"', f'#include "{databse_name}.h"')
+
+    with open(c_file, "w") as file:
+      file.write(c_code)
+
+    print(f"\033[96m Successfully generated C code {databse_name}.h {databse_name}.c !\033[0m")
 
   def generate_docs(self, file_out):
     """
