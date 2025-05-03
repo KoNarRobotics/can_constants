@@ -1,6 +1,7 @@
 # Baza danych wiadomości na magistrali CAN
 
 ## Budowa bazy danych
+
 ```
 can_messages
 ├── abstract				<--- warstwa abstrakcji upraszczająca definicje wiadomości
@@ -19,41 +20,45 @@ can_messages
 │   ├── odrive.py
 │   └── temperature.py
 └── output					<--- pliki wygenerowane przez generator
-    ├── can.c
-    ├── can.dbc
-    └── can.h
+    ├── can_messages.c
+    ├── can_messages.dbc
+    └── can_messages.h
 ```
 
 ## Generowanie plików C
 
 ### Prosty sposób
 
-
-
 1. Wywołaj skrypt i odpręż się:
+
 ```bash
 ./generate-files.sh
-# lub
+# lub dla wirtualnego środowiska
 ./generate-files.sh -v
 ```
-- flaga ```-v``` pobierze pakiety pathona w środowisku wirtualnym 
+
+- flaga `-v` pobierze pakiety pathona w środowisku wirtualnym
 
 ### Ręczne wywołanie
-Będąc w katalogu ```can_messages``` należy wywołać:
+
+Będąc w katalogu `can_messages` należy wywołać:
+
 ```bash
 python3 generator.py
 ```
 
-Jeśli nie istniał, zostanie utworzony katalog ```output```, w który pojawią się pliki.
+Jeśli nie istniał, zostanie utworzony katalog `output`, w który pojawią się pliki.
 
 Operację tą należy wykonać gdy:
 
-* klonujemy repo
-* ```git pull```
-* program nie działa
+- klonujemy repo
+- `git pull`
+- program nie działa
 
 ## Dodanie do projektu
-Najprostzym sposobem dodania do projektu dodanie bazy jako biblioteki statyczniej do projektu.
+
+Najprostszym sposobem dodania do projektu dodanie bazy jako biblioteki statyczniej do projektu.
+
 ```cmake
 
 add_subdirectory(can_constants) # or other path to the submodule
@@ -67,6 +72,7 @@ target_link_libraries(${PROJECT_NAME}
 ## Zastosowanie
 
 Przykład zakodowania danych:
+
 ```c
 struct can_example_t example_data;
 uint8_t example_buffer[8];
@@ -83,6 +89,7 @@ send(CAN_EXAMPLE_FRAME_ID, frame_buffer, CAN_EXAMPLE_LENGTH);
 ```
 
 Przykład odkodowania danych:
+
 ```c
 message_t message;
 struct can_example_t example_data;
@@ -106,6 +113,7 @@ if(!can_example_bar_is_in_range(bar))
 ## Format bazy danych
 
 Przykładowy format zapisu grupy wiadomości:
+
 ```python
 db = [
 
@@ -120,25 +128,26 @@ db = [
 ```
 
 ## Wiadomości
-Obiekt wiadomości ```Message``` zawiera w sobie:
 
-* ID ramki (musi być unikatowe)
-* nazwa w stringu (musi być unikatowa)
-* ilość bajtów danych (max 8)
-* lista nadawców
-* lista odbiorców
-* lista sygnałów
+Obiekt wiadomości `Message` zawiera w sobie:
+
+- ID ramki (musi być unikatowe)
+- nazwa w stringu (musi być unikatowa)
+- ilość bajtów danych (max 8)
+- lista nadawców
+- lista odbiorców
+- lista sygnałów
 
 ## Sygnały
 
 Sygnały mogą być pakowane w wiadomości w dowolnej kolejności i ilości pod warunkiem, że nie będą na siebie nachodzić oraz że ich łączny rozmiar nie przekroczy 8 bajtów.
 
-```Enum``` - typ wyliczeniowy używany do przesyłu ograniczonej liczby opcji. Wartości moga przyjmować liczby całkowite.
+`Enum` - typ wyliczeniowy używany do przesyłu ograniczonej liczby opcji. Wartości moga przyjmować liczby całkowite.
 
-```Unsiged``` - liczba całkowita o zdefiniowanej ilości bitów. Wariant bez znaku.
+`Unsigned` - liczba całkowita o zdefiniowanej ilości bitów. Wariant bez znaku.
 
-```Signed``` - liczba całkowita o zdefiniowanej ilości bitów. Wariant z znakiem.
+`Signed` - liczba całkowita o zdefiniowanej ilości bitów. Wariant z znakiem.
 
-```Float``` - 32-bitowy typ zmiennopozycyjny. Możliwość użycia podwójnej precyzji.
+`Float` - 32-bitowy typ zmiennopozycyjny. Możliwość użycia podwójnej precyzji.
 
-```Bool``` - jednobitowa zmienna logiczna, do wysyłania zero-jedynkowych wiadomości.
+`Bool` - jednobitowa zmienna logiczna, do wysyłania zero-jedynkowych wiadomości.
