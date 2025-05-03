@@ -27,16 +27,16 @@ konarm_control_mode = [
 ]
 
 config_status = [
-(1, 'can_filter_mask_high'),
-(2, 'can_filter_mask_low'),
-(3, 'can_filter_id_high'),
-(4, 'can_filter_id_low'),
-(5, 'can_konarm_status_frame_id'),
-(6, 'can_konarm_set_pos_frame_id'),
-(7, 'can_konarm_get_pos_frame_id'),
-(8, 'can_konarm_clear_errors_frame_id'),
-(9, 'can_konarm_get_errors_frame_id'),
-(10, 'can_konarm_set_control_mode_frame_id')
+	(1, 'can_filter_mask_high'),
+	(2, 'can_filter_mask_low'),
+	(3, 'can_filter_id_high'),
+	(4, 'can_filter_id_low'),
+	(5, 'can_konarm_status_frame_id'),
+	(6, 'can_konarm_set_pos_frame_id'),
+	(7, 'can_konarm_get_pos_frame_id'),
+	(8, 'can_konarm_clear_errors_frame_id'),
+	(9, 'can_konarm_get_errors_frame_id'),
+	(10, 'can_konarm_set_control_mode_frame_id')
 ]
 
 base_db = [
