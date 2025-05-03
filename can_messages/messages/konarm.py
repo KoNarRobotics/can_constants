@@ -27,16 +27,32 @@ konarm_control_mode = [
 ]
 
 config_status = [
-	(1, 'can_filter_mask_high'),
-	(2, 'can_filter_mask_low'),
-	(3, 'can_filter_id_high'),
-	(4, 'can_filter_id_low'),
-	(5, 'can_konarm_status_frame_id'),
-	(6, 'can_konarm_set_pos_frame_id'),
-	(7, 'can_konarm_get_pos_frame_id'),
-	(8, 'can_konarm_clear_errors_frame_id'),
-	(9, 'can_konarm_get_errors_frame_id'),
-	(10, 'can_konarm_set_control_mode_frame_id')
+ 
+	(1, 'stepper_motor_steps_per_rev'),
+	(2, 'stepper_motor_gear_ratio'),
+	(3, 'stepper_motor_max_velocity'),
+	(4, 'stepper_motor_min_velocity'),
+	(5, 'stepper_motor_reverse'),
+	(6, 'stepper_motor_enable_reversed'),
+	(7, 'stepper_motor_timer_prescaler'),
+	(8, 'encoder_arm_offset'),
+	(9, 'encoder_arm_reverse'),
+	(10, 'can_konarm_set_control_mode_frame_id'),
+	(11, 'encoder_arm_dead_zone_correction_angle'),
+	(12, 'encoder_arm_velocity_sample_amount'),
+	(13, 'encoder_motor_offset'),
+	(14, 'encoder_motor_reverse'),
+	(15, 'encoder_motor_dead_zone_correction_angle'),
+	(16, 'encoder_motor_velocity_sample_amount'),
+	(17, 'encoder_motor_enable'),
+	(18, 'pid_p'),
+	(19, 'pid_i'),
+	(20, 'pid_d'),
+	(21, 'movement_max_velocity'),
+	(22, 'movement_limit_lower'),
+	(23, 'movement_limit_upper'),
+	(24, 'movement_control_mode'),
+	(25, 'movement_max_acceleration')
 ]
 
 base_db = [
