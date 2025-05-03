@@ -86,10 +86,7 @@ Message(0x008, 'send_config', senders=[Module.KONARM], receivers=[Module.JETSON]
                Signed('config_status', 0, 32),
 ]),
 
-Message(0x009, 'set_config', senders=[Module.JETSON], receivers=[Module.KONARM], signals=[
-               Enum('setting_config', 0, 8, list=config_status),
-               Signed('config_status', 0,32),
-])
+Message(0x009, 'set_and_reset', senders=[Module.JETSON], receivers=[Module.KONARM], signals=[])
 	
 ]
 
