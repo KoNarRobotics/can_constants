@@ -1,3 +1,9 @@
+#
+# This file is part of the CAN messages database.
+# Created by Patryk Dudziński.
+# Date February 18, 2025
+#
+
 import cantools
 import os
 import shutil
