@@ -9,7 +9,7 @@ gpio_board_status = [
 
 db = [
 
-  Message(0x911, 'status', senders=[Module.GPIO], receivers=[Module.JETSON], signals=[
+  Message(0x911, 'gpio_status', senders=[Module.GPIO], receivers=[Module.JETSON], signals=[
     Enum('status', 0, 8, list=gpio_board_status)  
   ]),
 
