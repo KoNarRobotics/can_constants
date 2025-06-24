@@ -15,3 +15,5 @@ class Module(StrEnum):
 	METAL_DETECTOR = 'MetalDetectorBoard'
 	KONARM = "KonARM"
 	VESC = "VESC"
+	GPIO = "GPIO"
+	GEIGER = "GEIGER"

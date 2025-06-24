@@ -16,6 +16,8 @@ from messages import temperature
 from messages import konarm
 from messages import vesc6
 from messages import barometer
+from messages import gpio
+from messages import geiger
 
 if __name__ == '__main__':
   # Init CAN database builder
@@ -34,6 +36,8 @@ if __name__ == '__main__':
   cdb.add_module(konarm)
   cdb.add_module(vesc6)
   cdb.add_module(barometer)
+  cdb.add_module(gpio)
+  cdb.add_module(geiger)
 
   # Build the database and generate the files
   cdb.db_build()
