@@ -1,4 +1,4 @@
-from abstract.signals import Bool, Enum, Float
+from abstract.signals import Bool, Enum, Float, Unsigned
 from abstract.modules import Module
 from abstract.message import Message
 
@@ -15,6 +15,6 @@ db = [
 
 	Message(0x812, 'geiger_read', senders=[Module.JETSON], receivers=[Module.GPIO], signals=[
 		Float('micro_siwert', 0, scale=1, unit='uSv'),
-    Float('cpm', 32, scale=1, unit='cpm'),
+    Unsigned('cpm', 32,16, unit='cpm'),
 	]),
 ]
