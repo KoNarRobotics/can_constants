@@ -1,3 +1,9 @@
+#
+# This file is part of the CAN messages database.
+# Created by Patryk Dudziński.
+# Date May 1, 2025
+#
+
 #!/usr/bin/python3
 
 from abstract.signals import Enum, Float

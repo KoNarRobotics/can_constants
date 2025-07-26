@@ -1,3 +1,9 @@
+#
+# This file is part of the CAN messages database.
+# Created by Patryk Dudziński.
+# Date February 18, 2025
+#
+
 from abstract.signals import Enum, Unsigned,Float, Signed, BIG_ENDIAN, LITTLE_ENDIAN
 from abstract.modules import Module
 from abstract.message import Message
