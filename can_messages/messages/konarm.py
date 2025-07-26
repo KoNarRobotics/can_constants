@@ -104,7 +104,7 @@ Message(0x008, 'send_config', senders=[Module.KONARM], receivers=[Module.JETSON]
 Message(0x009, 'set_and_reset', senders=[Module.JETSON], receivers=[Module.KONARM], signals=[]),
 	
 Message(0x00A, 'set_effector_position', senders=[Module.JETSON], receivers=[Module.KONARM], signals=[
-    Signed('pos_percentage', 0, 8)
+    Signed('pos_percentage', 0, 8,unit="%")
   ]),
 ]
 
