@@ -21,21 +21,21 @@ CAN_PACKET_DISABLE = 4
 def vc(command_id:int, base_id:int):
   return (command_id << 8) | base_id
 
-def make_database_from_template(base_id,name):
+def make_database_from_template(base_id,name,base_name='modu_card_'):
   base_db = [
-    Message(vc(CAN_PACKET_HEARTBEAT_1,base_id), name+'_heartbeat_1', senders=[Module.MODUCARD], receivers=[Module.JETSON], signals=[
+    Message(vc(CAN_PACKET_HEARTBEAT_1,base_id), base_name+name+'_heartbeat_1', senders=[Module.MODUCARD], receivers=[Module.JETSON], signals=[
       Signed('uid',0 ,32,unit='', scale=1)],extended_frame=True),
     
-    Message(vc(CAN_PACKET_HEARTBEAT_2,base_id), name+'_heartbeat_2', senders=[Module.MODUCARD], receivers=[Module.JETSON], signals=[
+    Message(vc(CAN_PACKET_HEARTBEAT_2,base_id), base_name+name+'_heartbeat_2', senders=[Module.MODUCARD], receivers=[Module.JETSON], signals=[
       Signed('uid',0 ,32,unit='', scale=1)],extended_frame=True),
 
-    Message(vc(CAN_PACKET_RESET,base_id), name+'_reset', senders=[Module.JETSON], receivers=[Module.MODUCARD], signals=[
+    Message(vc(CAN_PACKET_RESET,base_id), base_name+name+'_reset', senders=[Module.JETSON], receivers=[Module.MODUCARD], signals=[
       Signed('uid',0 ,32,unit='', scale=1)],extended_frame=True),
     
-    Message(vc(CAN_PACKET_ENABLE,base_id), name+'_enable', senders=[Module.JETSON], receivers=[Module.MODUCARD], signals=[
+    Message(vc(CAN_PACKET_ENABLE,base_id), base_name+name+'_enable', senders=[Module.JETSON], receivers=[Module.MODUCARD], signals=[
       Signed('uid',0 ,32,unit='', scale=1)],extended_frame=True),
     
-    Message(vc(CAN_PACKET_DISABLE,base_id), name+'_disable', senders=[Module.JETSON], receivers=[Module.MODUCARD], signals=[
+    Message(vc(CAN_PACKET_DISABLE,base_id), base_name+name+'_disable', senders=[Module.JETSON], receivers=[Module.MODUCARD], signals=[
       Signed('uid',0 ,32,unit='', scale=1)],extended_frame=True)
 
   ]
@@ -53,7 +53,7 @@ def make_database(nodes:dict):
     raise e
 
 modules = {
-  'nav': 0x100,
+  'base_': 0, # base module for ids 0
 }
 
 db = make_database(modules)
