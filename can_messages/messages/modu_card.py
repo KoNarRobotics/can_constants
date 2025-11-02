@@ -9,6 +9,34 @@ from abstract.modules import Module
 from abstract.message import Message
 from abstract.generic_msg import STATUS_SIGNAL_LIST
 
+
+
+
+
+
+
+
+################################################
+# MODU CARD CAN FRAME ID FORMAT
+# FD can frames with 29 bit identifiers are used
+# 
+#  Identifier format:
+#  | 4 bits |      10 bits      |        15 bits        |
+#  | Command |    Base ID       |      Command ID       |
+#
+#
+#  Command - base commands for modu card messages system
+#  Base ID - base identifier for each modu card module
+#  Command ID - command id for each individual message on a module.
+#
+#
+# the CONSTANT VALUE
+#
+# CAN_MODU_CARD_<your name>_HEARTBEAT_1_FRAME_ID is also equal to Base ID
+# used to identify the module in the system
+#
+#
+#
 ################################################
 # MODU CARD CAN messages
 
@@ -19,8 +47,10 @@ CAN_PACKET_ENABLE = 3
 CAN_PACKET_DISABLE = 4
 
 
+
+
 def vc(command_id:int, base_id:int):
-  return (command_id << 8) | base_id
+  return (command_id << 25) | base_id
 
 def make_database_from_template(base_id,name,base_name='modu_card_'):
   base_db = [
@@ -60,7 +90,8 @@ def make_database(nodes:dict):
     raise e
 
 modules = {
-  'base_': 0, # base module for ids 0
+  'base': 0, # base module for ids 0
+  'suspension': 0x1310, # sensors module for ids 1
 }
 
 db = make_database(modules)
