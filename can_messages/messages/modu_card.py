@@ -7,6 +7,7 @@
 from abstract.signals import Enum, Unsigned,Float, Signed, BIG_ENDIAN, LITTLE_ENDIAN
 from abstract.modules import Module
 from abstract.message import Message
+from abstract.generic_msg import STATUS_SIGNAL_LIST
 
 ################################################
 # MODU CARD CAN messages
@@ -24,10 +25,16 @@ def vc(command_id:int, base_id:int):
 def make_database_from_template(base_id,name,base_name='modu_card_'):
   base_db = [
     Message(vc(CAN_PACKET_HEARTBEAT_1,base_id), base_name+name+'_heartbeat_1', senders=[Module.MODUCARD], receivers=[Module.JETSON], signals=[
-      Signed('uid',0 ,32,unit='', scale=1)],extended_frame=True),
+      Signed('uid',0 ,32,unit='', scale=1),
+      Enum('status', 32, 8,  list=STATUS_SIGNAL_LIST)
+      ],
+      extended_frame=True),
+      
     
     Message(vc(CAN_PACKET_HEARTBEAT_2,base_id), base_name+name+'_heartbeat_2', senders=[Module.MODUCARD], receivers=[Module.JETSON], signals=[
-      Signed('uid',0 ,32,unit='', scale=1)],extended_frame=True),
+      Signed('uid',0 ,32,unit='', scale=1),
+      Enum('status', 32, 8,  list=STATUS_SIGNAL_LIST)
+      ],extended_frame=True),
 
     Message(vc(CAN_PACKET_RESET,base_id), base_name+name+'_reset', senders=[Module.JETSON], receivers=[Module.MODUCARD], signals=[
       Signed('uid',0 ,32,unit='', scale=1)],extended_frame=True),

@@ -18,3 +18,4 @@ class Module(StrEnum):
 	GPIO = "GPIO"
 	GEIGER = "GEIGER"
 	MODUCARD = "ModuCard"
+	SUSPENSION = "Suspension"

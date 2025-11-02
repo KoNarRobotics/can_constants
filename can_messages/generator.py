@@ -19,6 +19,7 @@ from messages import barometer
 from messages import gpio
 from messages import geiger
 from messages import modu_card
+from messages import suspension
 
 if __name__ == '__main__':
   # Init CAN database builder
@@ -39,6 +40,7 @@ if __name__ == '__main__':
   cdb.add_module(barometer)
   cdb.add_module(gpio)
   cdb.add_module(geiger)
+  cdb.add_module(suspension)
   cdb.add_module(modu_card)
 
   # Build the database and generate the files
