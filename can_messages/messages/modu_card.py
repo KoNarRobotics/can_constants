@@ -45,6 +45,7 @@ CAN_PACKET_HEARTBEAT_2 = 1
 CAN_PACKET_RESET = 2
 CAN_PACKET_ENABLE = 3
 CAN_PACKET_DISABLE = 4
+CAN_PACKET_SOFTWARE_VERSION = 5
 
 
 
@@ -73,7 +74,14 @@ def make_database_from_template(base_id,name,base_name='modu_card_'):
       Signed('uid',0 ,32,unit='', scale=1)],extended_frame=True),
     
     Message(vc(CAN_PACKET_DISABLE,base_id), base_name+name+'_disable', senders=[Module.JETSON], receivers=[Module.MODUCARD], signals=[
-      Signed('uid',0 ,32,unit='', scale=1)],extended_frame=True)
+      Signed('uid',0 ,32,unit='', scale=1)],extended_frame=True),
+
+    Message(vc(CAN_PACKET_SOFTWARE_VERSION,base_id), base_name+name+'_software_version', senders=[Module.MODUCARD], receivers=[Module.JETSON], signals=[
+      Signed('uid',0 ,32,unit='', scale=1),
+      Unsigned('software_version_major',32,8,unit='', scale=1),
+      Unsigned('software_version_minor',40,16,unit='', scale=1),
+      Unsigned('software_version_build',56,8,unit='', scale=1)
+      ],extended_frame=True),
 
   ]
   return base_db
