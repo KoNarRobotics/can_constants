@@ -16,6 +16,9 @@ struct CanMsg {
 };
 
 
+enum class CanStructureRequestState : uint8_t { NOT_REQUESTED = 0, RECEIVED = 1, INCOMPLETE = 2 };
+
+
 /// @brief Class to send structures over CAN bus
 ///
 /// **CAN Frame Data Structure:**
@@ -88,6 +91,7 @@ public:
     size_t total_segments = total_size / frame_size + ((total_size % frame_size) ? 1 : 0);
     size_t segment_index  = msg.data[0];
     if(segment_index >= total_segments) {
+      request_state_ = CanStructureRequestState::INCOMPLETE;
       return false;
     }
     size_t size_to_copy =
@@ -97,11 +101,13 @@ public:
 
     for(size_t i = 0; i < total_segments; ++i) {
       if(!_decoded_parts[i]) {
+        request_state_ = CanStructureRequestState::INCOMPLETE;
         return false;
       }
     }
     _struct = *reinterpret_cast<Type *>(_rx_buffor);
     start_unpacking();
+    request_state_ = CanStructureRequestState::RECEIVED;
     return true;
   }
 
@@ -109,11 +115,20 @@ public:
     return _struct;
   }
 
+  const CanStructureRequestState &get_request_state() const {
+    return request_state_;
+  }
+
+  void reset_request_state() {
+    request_state_ = CanStructureRequestState::NOT_REQUESTED;
+  }
+
 private:
   static const constexpr size_t frame_size = FdCan ? 63 : 7;
   uint8_t _rx_buffor[sizeof(Type)];
   Type _struct;
   bool _decoded_parts[sizeof(Type) / frame_size + 1]{ false };
+  CanStructureRequestState request_state_{ CanStructureRequestState::NOT_REQUESTED };
 };
 
 
